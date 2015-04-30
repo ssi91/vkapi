@@ -427,7 +427,6 @@ void * FSMJson::setInMap(std::string const &_s, char const *key)
 						.substr(1, stack.getTop().jsonArrayString.substr(stack.getTop().curent, endIndex - (stack.getTop().curent - 1)).length() - 2);
 				std::string *dd = new std::string(pureVal);
 				return (void *)dd;
-//				return (void) pureVal;
 			}
 			stack.getTop().curent = endIndex;
 			if (stack.getTop().lastState)
@@ -453,6 +452,8 @@ void * FSMJson::setInMap(std::string const &_s, char const *key)
 			stack.getTop().curent = endIndex;
 		}
 	}
+	if(key)
+		return nullptr;
 }
 
 void FSMJson::getLimits(size_t &start, size_t &end, const char ch, const std::string &_s) const

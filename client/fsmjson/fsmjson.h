@@ -4,6 +4,7 @@
 
 #ifndef _CLIENT_FSMJSON_H_
 #define _CLIENT_FSMJSON_H_
+#include <string>
 #include <string.h>
 #include <stdint.h>
 
@@ -18,6 +19,7 @@ private:
 	size_t getNextState(const char *_s, size_t &state, size_t &endIndex, size_t &startIndex) const;
 	void getLimits(size_t &start, size_t &end, const char ch, const std::string &_s) const;
 	char OCChars(const char c) const;
+	void * setInMap(std::string const &_s, char const *key = nullptr);
 
 	static const char MARK_DEF = 0;
 	static const char MARK_OPEN_Q_KEY = 1;
@@ -25,6 +27,8 @@ private:
 	static const char MARK_OPEN_Q_VALUE = 3;
 	static const char MARK_CLOSE_Q_VALUE = 4;
 	static const char MARK_MULT = 5;
+
+	friend class Json;
 public:
 
 	FSMJson();
@@ -32,7 +36,6 @@ public:
 	FSMJson(FSMJson &_fsm);
 	~FSMJson();
 	bool isValidJson(const char *_s) const;
-	void * setInMap(std::string const &_s, char const *key = nullptr);
 };
 
 
