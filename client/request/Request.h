@@ -10,6 +10,16 @@
 
 namespace vkmes
 {
+	struct sp
+	{
+		char *key;
+		char *value;
+
+		sp(const char *_key, const char *_value);
+		sp(const sp &_sp);
+		~sp();
+	};
+
 	class Request
 	{
 	private:
