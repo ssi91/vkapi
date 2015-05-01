@@ -6,13 +6,13 @@
 #include "renderexception.h"
 
 template<class T>
-Stack<T>::Stack()
+inline Stack<T>::Stack()
 {
 	count = 0;
 }
 
 template<>
-Stack<int>::Stack(const int &_a)
+inline Stack<int>::Stack(const int &_a)
 {
 	count = 1;
 	a = new int;
@@ -20,7 +20,7 @@ Stack<int>::Stack(const int &_a)
 }
 
 template<class T>
-Stack<T>::~Stack()
+inline Stack<T>::~Stack()
 {
 	if (!getCount())
 		return;
@@ -29,7 +29,7 @@ Stack<T>::~Stack()
 }
 
 template<class T>
-void Stack<T>::push(T const &_a)
+inline void Stack<T>::push(T const &_a)
 {
 	T *temp;
 	if (count)
@@ -55,7 +55,7 @@ void Stack<T>::push(T const &_a)
 }
 
 template<class T>
-T Stack<T>::pop()
+inline T Stack<T>::pop()
 {
 	if (count)
 	{
@@ -85,7 +85,7 @@ T Stack<T>::pop()
 }
 
 template<>
-void Stack<char>::incTop()
+inline void Stack<char>::incTop()
 {
 	if (count)
 		++a[count - 1];
@@ -96,7 +96,7 @@ void Stack<char>::incTop()
 }
 
 template<>
-void Stack<int>::incTop()
+inline void Stack<int>::incTop()
 {
 	if (count)
 		++a[count - 1];
@@ -107,7 +107,7 @@ void Stack<int>::incTop()
 }
 
 template<>
-void Stack<char>::decTop()
+inline void Stack<char>::decTop()
 {
 	if (count)
 		--a[count - 1];
@@ -118,7 +118,7 @@ void Stack<char>::decTop()
 }
 
 template<>
-void Stack<int>::decTop()
+inline void Stack<int>::decTop()
 {
 	if (count)
 		--a[count - 1];
@@ -129,13 +129,13 @@ void Stack<int>::decTop()
 }
 
 template<class T>
-size_t Stack<T>::getCount()
+inline size_t Stack<T>::getCount()
 {
 	return count;
 }
 
 template<class T>
-T &Stack<T>::getTop()
+inline T &Stack<T>::getTop()
 {
 	if (count)
 	{
