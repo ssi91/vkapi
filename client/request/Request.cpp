@@ -67,7 +67,6 @@ namespace vkmes
 			url = addGetParam(url, "secret_key", secretKey);
 			url = addGetParam(url, "code", code);
 			url = addGetParam(url, "redirect_uri", "http://api.vk.com/blank.html");
-//			std::cout << url << std::endl;
 			curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorBuffer);
 			curl_easy_setopt(curl, CURLOPT_URL, url);
 			curl_easy_setopt(curl, CURLOPT_HEADER, 0);
@@ -79,7 +78,7 @@ namespace vkmes
 				std::cout << buffer << "\n";
 				Json json(buffer);
 				std::string tokenString = json.getValueByKey("token");
-				if(tokenString != "")
+				if (tokenString != "")
 				{
 					char *tokenCharptr = new char[tokenString.length() + 1];
 					strcpy(tokenCharptr, tokenString.c_str());
@@ -100,7 +99,7 @@ namespace vkmes
 
 	char *Request::addGetParam(char *link, const char *pKey, const char *val) const
 	{
-		char *keyValString = new char[strlen(pKey) + 1 + strlen(val)];
+		char *keyValString = new char[strlen(pKey) + 2 + strlen(val)];
 		strcpy(keyValString, pKey);
 		strcat(keyValString, "=");
 		strcat(keyValString, val);
@@ -142,7 +141,42 @@ namespace vkmes
 
 	bool Request::auth() const
 	{
-		getToken();
+		char *token = getToken();
 		return false;
+	}
+
+	void *Request::req(const char *uri, Stack<sp> &_paramStack, char const paramType)
+	{
+		CURL *curl;
+		CURLcode result;
+		curl = curl_easy_init();
+		char errorBuffer[CURL_ERROR_SIZE];
+		std::string buffer;
+		if (curl)
+		{
+			char *url = new char[strlen(uri) + 1];
+			strcpy(url, uri);
+			if (!paramType)
+			{
+				while (_paramStack.getCount())
+				{
+					sp sp1 = _paramStack.pop();
+					url = addGetParam(url, sp1.key, sp1.value);
+				}
+			}
+			curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, &errorBuffer);
+			curl_easy_setopt(curl, CURLOPT_URL, url);
+			curl_easy_setopt(curl, CURLOPT_HEADER, 1); //TODO уметь редактировать через параметр
+			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeResp);
+			curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
+			result = curl_easy_perform(curl);
+			if (result == CURLE_OK)
+			{
+				std::string *qq = new std::string(buffer);
+				return (void *)qq;
+			}
+			curl_easy_cleanup(curl);
+		}
+		return nullptr;
 	}
 }
